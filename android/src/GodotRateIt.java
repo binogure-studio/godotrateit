@@ -9,6 +9,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.View;
 
@@ -22,9 +24,10 @@ public class GodotRateIt extends Godot.SingletonBase {
   }
 
   public GodotRateIt(Activity p_activity) {
-    registerClass("GodotRateIt", new String[] {"rate"});
+    registerClass("GodotRateIt", new String[] {"rate", "get_version"});
 
     activity = p_activity;
+    context = activity.getApplicationContext();
   }
 
   public void rate() {
@@ -33,6 +36,19 @@ public class GodotRateIt extends Godot.SingletonBase {
 				rateApp();
 			}
     });
+  }
+
+  public int get_version() {
+    int version = -1;
+
+    try {
+      PackageInfo pInfo = context.getPackageManager().getPackageInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
+
+      version = pInfo.versionCode;
+    } catch (NameNotFoundException e1) {
+      Log.e(this.getClass().getSimpleName(), "Name not found", e1);
+    }
+    return version;
   }
 
   public void rateApp() {

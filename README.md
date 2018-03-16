@@ -29,6 +29,8 @@ onready var godot_rateit = Globals.get_singleton('GodotRateIt')
 
 func rate_it():
   if OS.get_name() == 'Android' and godot_rateit != null:
+    print('Debug, rating the app %s' % [ godot_rateit.get_version()])
+
     godot_rateit.rate()
 ```
 
